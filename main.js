@@ -11,6 +11,7 @@ let guessTurn = 0
 let currentWord = selectRandomWord().toUpperCase()
 let letterCounts = getLetterCountsObj(currentWord)
 let isGameOver = false
+let guesses = []
 
 
 function getLetterCountsObj(str) {
@@ -47,6 +48,7 @@ function submitGuess(rowElement) {
         }
     }
     checkUserWin()
+    guesses.push(inputGuessEle.value)
     guessTurn++
 }
 
@@ -86,6 +88,11 @@ function handleInputGuess() {
         return
     }
 
+    if (guesses.includes(inputGuessEle.value)){
+        alert("You already guessed that!")
+        return
+    }
+
     if (!isValidGuess(inputGuessEle.value)) {
         alert("Word does not exist")
         return
@@ -104,6 +111,8 @@ function handleInputGuess() {
         submitGuess(row5Ele)
     } else if (guessTurn === 5) {
         submitGuess(row6Ele)
+    } else {
+        alert("You already lost")
     }
 }
 
