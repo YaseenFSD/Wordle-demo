@@ -13,6 +13,8 @@ let letterCounts = getLetterCountsObj(currentWord)
 let isGameOver = false
 let guesses = []
 
+inputGuessEle.addEventListener("input", handleInputChange)
+goBtn.addEventListener("click", handleInputGuess)
 
 function getLetterCountsObj(str) {
     let obj = {}
@@ -26,9 +28,6 @@ function getLetterCountsObj(str) {
     }
     return obj
 }
-
-inputGuessEle.addEventListener("input", handleInputChange)
-goBtn.addEventListener("click", handleInputGuess)
 
 
 function submitGuess(rowElement) {
