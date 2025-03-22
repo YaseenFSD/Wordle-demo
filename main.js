@@ -8,16 +8,58 @@ const row5Ele = document.getElementById("row-5")
 const row6Ele = document.getElementById("row-6")
 let previousVal = ""
 let guessTurn = 0
+// let currentWord = selectRandomWord().toUpperCase()
+let currentWord = "COACH"
+let letterCounts = getLetterCountsObj(currentWord)
+
+// catch
+// let obj = {   c:2,
+//     a: 1,
+//     t: 1,
+//     h: 1
+// }
+
+function getLetterCountsObj(str) {
+    let obj = {}
+    for (let i = 0; i < str.length; i++){
+        let currentChar = str.charAt(i)
+        if (currentChar in obj){
+            obj[currentChar] = obj[currentChar] + 1
+        }else {
+            obj[currentChar] = 1
+        }
+    }
+    return obj
+}
 
 inputGuessEle.addEventListener("input", handleInputChange)
 goBtn.addEventListener("click", handleInputGuess)
 
 
 function submitGuess(rowElement){
+    let letterCountsCopy = {...letterCounts}
     for(let i = 0; i < rowElement.children.length; i++){
-        rowElement.children[i].innerText = inputGuessEle.value.charAt(i)
+
+        let currentGuessChar = inputGuessEle.value.charAt(i)
+        rowElement.children[i].innerText = currentGuessChar
+        if (currentGuessChar === currentWord.charAt(i)){
+            rowElement.children[i].style.backgroundColor = "green"
+        } else if (currentWord.includes(currentGuessChar)) {
+            if (letterCountsCopy[currentGuessChar] > 0){
+                rowElement.children[i].style.backgroundColor = "yellow"
+                letterCountsCopy[currentGuessChar] = letterCountsCopy[currentGuessChar] - 1
+            }
+            
+        }
     }
     guessTurn++
+}
+
+function isValidGuess(str){
+    if (!wordsList.includes(str.toLowerCase())){
+        return false
+    }
+    return true
 }
 
 function isValidInput(str){
@@ -37,6 +79,11 @@ function handleInputGuess(){
     if (inputGuessEle.value.length !== 5){
         return
     }
+    if (!isValidGuess(inputGuessEle.value)) {
+        alert("Word does not exist")
+        return
+    }
+
     if (guessTurn === 0){
         submitGuess(row1Ele)
     } else if ( guessTurn === 1) {
@@ -62,5 +109,18 @@ function handleInputChange(event){
     previousVal = event.target.value
 }
 
+function selectRandomWord(){
+    const randomNumber = Math.floor(Math.random() * (wordsList.length - 1))
+    return wordsList[randomNumber]
+}
 
+// function checkWord(rowElement){
+//     for(let i = 0; i < inputGuessEle.value.length; i++) {
+
+//     }
+// }
+
+console.log(currentWord)
 // console.log(row1Ele.children)
+
+getLetterCountsObj("catch")
